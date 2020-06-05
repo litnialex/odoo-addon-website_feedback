@@ -1,0 +1,68 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <!--
+    <record model="ir.ui.view" id="website_feedback.list">
+      <field name="name">website_feedback list</field>
+      <field name="model">website_feedback.website_feedback</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+    -->
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="action_window">
+      <field name="name">Website Feedback</field>
+      <field name="res_model">website_feedback.feedback</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- server action to the one above -->
+    <!--
+    <record model="ir.actions.server" id="website_feedback.action_server">
+      <field name="name">website_feedback server</field>
+      <field name="model_id" ref="model_website_feedback_website_feedback"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": self._name,
+        }
+      </field>
+    </record>
+    -->
+
+    <!-- Top menu item -->
+    <menuitem name="Feedback" id="menu_root"/>
+    <!-- menu categories -->
+    <!--
+    <menuitem name="Menu 1" id="website_feedback.menu_1" parent="website_feedback.menu_root"/>
+    <menuitem name="Menu 2" id="website_feedback.menu_2" parent="website_feedback.menu_root"/>
+    -->
+    <!-- actions -->
+    <menuitem name="List" id="menu_feedback" parent="menu_root"
+              action="action_window"/>
+    <!--
+    <menuitem name="Server to list" id="website_feedback" parent="website_feedback.menu_2"
+              action="website_feedback.action_server"/>
+    -->
+    <record id="list_feedback" model="ir.ui.view">
+        <field name="name">Feedback: list</field>
+        <field name="model">website_feedback.feedback</field>
+        <field name="arch" type="xml">
+            <tree string="Blablabla">
+                <field name="name"/>
+                <field name="company_name"/>
+                <field name="date"/>
+            </tree>
+        </field>
+    </record>
+
+  </data>
+</odoo>

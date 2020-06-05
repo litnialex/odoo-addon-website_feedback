@@ -1,0 +1,95 @@
+<odoo>
+  <template id="index">
+
+    <t t-call="website.layout">
+      <div id="wrap">
+        <div class="oe_structure"/>
+          <div class="container">
+            <link href="/website_feedback/static/src/css/website_feedback.css" rel="stylesheet" id="bootstrap-css"/>
+            <script src='https://www.google.com/recaptcha/api.js'></script>
+            <section class="s_title">
+              <div class="row">
+              <div class="col-md-12">
+                <h1 class="text-center">Отзывы<br/></h1>
+              </div>
+              </div>
+            </section>
+            <div class="row comment">
+
+              <p><iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?list=PL72h3kAcDeSOLl4yk2k9P0JRucsb4HK0I" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe></p>
+
+              <!-- Feedback submitted -->
+              <t t-if="feedback_submitted">
+                <div class="head">
+                  <strong class='user'>
+                    <t t-esc="feedback_submitted['name']"/>, <t t-esc="feedback_submitted['company_name']"/></strong><t t-esc="datetime.date.today()"/>
+                </div>
+                <p style="white-space: pre-wrap"><t t-esc="feedback_submitted['feedback']"/></p>
+              </t>
+
+              <!-- Feedback list -->
+              <t t-foreach="feedback_set.sorted(key=lambda x: x.date, reverse=True)" t-as="feedback">
+                <t t-if="feedback.state == 'approved'">
+                  <div class="head">
+                      <strong class='user'>
+                        <t t-esc="feedback.name"/>
+                        <t t-if="feedback.company_name">, <t t-esc="feedback.company_name"/></t>
+                      </strong>
+                      <a t-if="feedback.prooflink" t-att-href="feedback.prooflink" target="_blank">[из видео-отзыва]</a>
+                      <t t-else="">, <t t-esc="feedback.date"/></t>
+                  </div>
+                  <p style="white-space: pre-wrap"><t t-esc="feedback.feedback"/></p>
+                </t>
+              </t>
+              
+            </div>
+            <hr/>
+
+            <div class="row" id="addcomment">
+                <h2>Напишите Ваш Отзыв</h2>
+                <form action="/feedback/" method="POST" class="s_website_form form-horizontal container-fluid mt32">
+
+                  <!-- CSRF -->
+                  <input type="hidden" name="csrf_token" t-att-value="request.csrf_token(time_limit=None)"/>
+
+                  <div class="form-group form-field o_website_form_required_custom">
+                    <label class="col-md-3 col-sm-4 control-label" for="name">Ваше Имя</label>
+                    <div class="col-md-7 col-sm-8">
+                      <input type="text" class="form-control o_website_form_input" name="name" required="" value=""/>
+                    </div>
+                  </div>
+                  <div class="form-group form-field">
+                    <label class="col-md-3 col-sm-4 control-label" for="name">Название Компании</label>
+                    <div class="col-md-7 col-sm-8">
+                      <input type="text" class="form-control o_website_form_input" name="company_name" value=""/>
+                    </div>
+                  </div>
+                  <div class="form-group form-field o_website_form_required_custom">
+                    <label class="col-md-3 col-sm-4 control-label" for="name">Ваш Email</label>
+                    <div class="col-md-7 col-sm-8">
+                      <input type="email" class="form-control o_website_form_input" name="email" required="" value=""/>
+                    </div>
+                  </div>
+                  <div class="form-group form-field o_website_form_required_custom">
+                    <label class="col-md-3 col-sm-4 control-label" for="name">Ваш Отзыв</label>
+                    <div class="col-md-7 col-sm-8">
+                      <textarea name="feedback" class="form-control o_website_form_input" required=""></textarea>
+                    </div>
+                  </div>
+                  <!-- ReCaptcha -->
+        	<div class="form-group form-field o_website_form_required_custom">
+          	<label class="col-md-3 col-sm-4 control-label" for="g-recaptcha-response">Подтвердите, что вы не робот</label>
+          	<div class="col-md-7 col-sm-8">
+            	<span class="o_website_form_recaptcha" />
+          	</div>
+        	</div>
+
+                  <button class="btn btn-primary btn-lg">Send</button>
+                </form>
+            </div>
+
+          </div>
+      </div>
+    </t>
+  </template>
+</odoo>
